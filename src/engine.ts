@@ -1,8 +1,6 @@
 import axios, { AxiosProgressEvent } from "axios";
 import fs from "fs";
 
-
-
 // Video details
 const videoDetails = {
   snippet: {
@@ -16,7 +14,7 @@ const videoDetails = {
   },
 };
 
-// Path to your video file
+// Function to create an upload session
 async function createUploadSession(
   accessToken: string,
   videoFileSize: number
