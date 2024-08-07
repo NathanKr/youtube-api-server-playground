@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
-import { google, Auth } from "googleapis";
+import { google } from "googleapis";
 import credentials from "../credentials.json"; // Ensure this file is correctly formatted and accessible
 import { PORT } from "./constants"; // Ensure PORT is defined in your constants
-import { uploadVideo } from "./engine";
+import {  uploadVideoGemini } from "./engine";
 import path from "path";
 
 // Define the Credentials type (if not already defined)
@@ -57,9 +57,7 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
       // Call the function to upload the video
       const videoFullPath = path.resolve(".", "data", "video1.mp4");
       if (tokens.access_token) {
-        await uploadVideo(tokens.access_token, videoFullPath);
-        console.log(`upload ${videoFullPath} to YouTube`);
-        
+        uploadVideoGemini(tokens.access_token, videoFullPath);
       }
     } catch (error) {
       res.send("Error during authentication");
@@ -70,7 +68,10 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
   }
 });
 
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}/auth`);
 });
+
+
