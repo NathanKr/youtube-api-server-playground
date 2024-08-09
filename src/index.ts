@@ -1,43 +1,17 @@
 import express, { Request, Response } from "express";
-import { google } from "googleapis";
-import credentials from "../credentials.json"; // Ensure this file is correctly formatted and accessible
 import { PORT } from "./constants"; // Ensure PORT is defined in your constants
-import {  uploadVideoGemini } from "./engine";
+import {  uploadVideo } from "./engine";
 import path from "path";
+import { authorizationURL, oauth2Client } from "./google-utils";
+import { getDataDirPath } from "./project-utils";
 
-// Define the Credentials type (if not already defined)
-interface Credentials {
-  web: {
-    client_id: string;
-    client_secret: string;
-    redirect_uris: string[];
-  };
-}
-
-const creds: Credentials = credentials;
 
 // Initialize Express app
 const app = express();
 
-// Set up OAuth2 client with your credentials
-const oauth2Client = new google.auth.OAuth2(
-  creds.web.client_id,
-  creds.web.client_secret,
-  creds.web.redirect_uris[0] // Ensure this is the correct redirect URI
-);
-
-// Scopes required for the API
-const scopes = ["https://www.googleapis.com/auth/youtube.upload"];
-
-// Generate the authorization URL
-const url = oauth2Client.generateAuthUrl({
-  access_type: "offline",
-  scope: scopes,
-});
-
 // Route to start the OAuth process
 app.get("/auth", (req: Request, res: Response) => {
-  res.redirect(url);
+  res.redirect(authorizationURL);
 });
 
 // Route to handle OAuth2 callback. /oauth2callback is actually the above YOUR_REDIRECT_URI
@@ -55,9 +29,13 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
       console.log("Access token:", tokens.access_token);
 
       // Call the function to upload the video
-      const videoFullPath = path.resolve(".", "data", "video1.mp4");
+      const videoFullPath = path.resolve(getDataDirPath(), "video1.mp4");
+      const thumbnailPath = path.resolve(getDataDirPath(),"thumbnail.jpg");
+
       if (tokens.access_token) {
-        uploadVideoGemini(tokens.access_token, videoFullPath);
+        console.log('uploadVideo process starting, please wait ...');
+        
+        uploadVideo(tokens.access_token, videoFullPath,thumbnailPath);
       }
     } catch (error) {
       res.send("Error during authentication");
