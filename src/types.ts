@@ -23,7 +23,7 @@ export interface Credentials {
   
   export interface VideoStatus {
     privacyStatus: 'private' | 'public' | 'unlisted';
-    madeForKids: boolean;
+    selfDeclaredMadeForKids: boolean;
     // Add other status properties as needed
   }
   

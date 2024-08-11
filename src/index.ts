@@ -49,7 +49,7 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
         };
         const videoStatus: VideoStatus = {
           privacyStatus: "private", // or 'public', 'unlisted'
-          madeForKids: false,
+          selfDeclaredMadeForKids : false,
         };
         const thumbnail : Thumbnail = {
           path: thumbnailPath
