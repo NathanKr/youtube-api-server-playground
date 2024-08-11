@@ -4,7 +4,13 @@ import { uploadVideo } from "./engine";
 import path from "path";
 import { authorizationURL, oauth2Client } from "./google-utils";
 import { getDataDirPath } from "./project-utils";
-import { PlaylistItem, Thumbnail, UploadVideoArgs, VideoSnippet, VideoStatus } from "./types";
+import {
+  PlaylistItem,
+  Thumbnail,
+  UploadVideoArgs,
+  VideoSnippet,
+  VideoStatus,
+} from "./types";
 
 // Initialize Express app
 const app = express();
@@ -48,13 +54,13 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
         };
         const videoStatus: VideoStatus = {
           privacyStatus: "private", // or 'public', 'unlisted'
-          selfDeclaredMadeForKids : false,
+          selfDeclaredMadeForKids: false,
         };
-        const thumbnail : Thumbnail = {
-          path: thumbnailPath
+        const thumbnail: Thumbnail = {
+          path: thumbnailPath,
         };
-        const playlistItem : PlaylistItem = {
-          playlistId: "PLSw8d_JlnQ2tC_HcnKG3PQ74Qfje36pDA" // id of test playlist
+        const playlistItem: PlaylistItem = {
+          playlistId: "PLSw8d_JlnQ2tC_HcnKG3PQ74Qfje36pDA", // id of test playlist
         };
         const args: UploadVideoArgs = {
           accessToken: tokens.access_token,
@@ -62,7 +68,7 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
           videoSnippet,
           videoStatus,
           thumbnail,
-          playlistItem
+          playlistItem,
         };
         uploadVideo(args);
       }
