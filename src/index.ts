@@ -43,7 +43,6 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
                         3:45 Second Section
                         5:00 Conclusion`,
           tags: ["tag1", "tag2"],
-          publishedAt: today, // Set the creation date to today
           defaultAudioLanguage: "en",
           defaultLanguage: "en",
         };

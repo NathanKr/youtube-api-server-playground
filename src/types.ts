@@ -15,7 +15,6 @@ export interface Credentials {
     title: string;
     description?: string;
     tags?: string[];
-    publishedAt?: Date;
     defaultAudioLanguage?: string;
     defaultLanguage?: string;
     // Add other snippet properties as needed

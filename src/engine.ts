@@ -13,7 +13,6 @@ export async function uploadVideo(args: UploadVideoArgs) {
     requestBody: {
       snippet: {
         ...args.videoSnippet,
-        publishedAt: args.videoSnippet.publishedAt?.toISOString() ?? undefined,
       },
       status: args.videoStatus,
     },

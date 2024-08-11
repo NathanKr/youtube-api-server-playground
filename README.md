@@ -1,5 +1,10 @@
 <h2>Motivation</h2>
-Experiment with youtube api (server side only) to access and modify private youtube data - upload video
+Experiment with youtube api (server side only) to access and modify private youtube data 
+<ul>
+<li>upload video : title , description , tags , defaultAudioLanguage , defaultLanguage , privacyStatus , selfDeclaredMadeForKids</li>
+<li>upload thumbnail</li>
+<li>upload playlist</li>
+</ul>
 
 <h2>Setup </h2>
 <h3>Google cloud console project</h3>
