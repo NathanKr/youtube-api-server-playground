@@ -1,52 +1,60 @@
 import fs from "fs";
 import { google } from "googleapis";
+import { UploadVideoArgs } from "./types";
 
-export async function uploadVideo(
-  access_token: string,
-  videoPath: string,
-  thumbnailPath: string
-) {
+export async function uploadVideo(args: UploadVideoArgs) {
   const auth = new google.auth.OAuth2();
-  auth.setCredentials({ access_token });
+  auth.setCredentials({ access_token: args.accessToken });
 
   const youtube = google.youtube({ version: "v3", auth });
-  const today = new Date().toISOString(); // Get the current date in ISO 8601 format
 
-  // Create upload session
   const videoResponse = await youtube.videos.insert({
     part: ["snippet", "status"],
     requestBody: {
       snippet: {
-        title: "My Video",
-        description: `Video description
-                      0:00 Introduction
-                      1:30 First Section
-                      3:45 Second Section
-                      5:00 Conclusion`,
-        tags: ["tag1", "tag2"],
-        publishedAt: today, // Set the creation date to today
-        defaultLanguage: "en", // Set the video language (e.g., "en" for English)
+        ...args.videoSnippet,
+        publishedAt: args.videoSnippet.publishedAt?.toISOString() ?? undefined,
       },
-      status: {
-        privacyStatus: "private", // or 'public', 'unlisted'
-      },
+      status: args.videoStatus,
     },
     media: {
-      body: fs.createReadStream(videoPath),
+      body: fs.createReadStream(args.videoPath),
     },
   });
+
   console.log("Video uploaded", videoResponse.data);
 
-  // Upload the thumbnail
-  const videoId = videoResponse.data.id;
-  if (videoId) {
-    await youtube.thumbnails.set({
-      videoId,
-      media: {
-        body: fs.createReadStream(thumbnailPath),
-      },
-    });
-    console.log('thumbnail uploaded to video', videoResponse.data);
+  if (args.thumbnail) {
+    const videoId = videoResponse.data.id;
+    if (videoId) {
+      await youtube.thumbnails.set({
+        videoId,
+        media: {
+          body: fs.createReadStream(args.thumbnail.path),
+        },
+      });
+      console.log("Thumbnail uploaded to video", videoResponse.data);
+    }
   }
 
+  if (args.playlistItem) {
+    const playlistItemResponse = await youtube.playlistItems.insert({
+      part: ["snippet"],
+      requestBody: {
+        snippet: {
+          playlistId: args.playlistItem.playlistId,
+          resourceId: {
+            kind: "youtube#video",
+            videoId: videoResponse.data.id,
+          },
+        },
+      },
+    });
+
+    if (playlistItemResponse.data.snippet) {
+      console.log(
+        `Video added to playlist: ${playlistItemResponse.data.snippet.title}`
+      );
+    }
+  }
 }

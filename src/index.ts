@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { PORT } from "./constants"; // Ensure PORT is defined in your constants
-import {  uploadVideo } from "./engine";
+import { uploadVideo } from "./engine";
 import path from "path";
 import { authorizationURL, oauth2Client } from "./google-utils";
 import { getDataDirPath } from "./project-utils";
-
+import { PlaylistItem, Thumbnail, UploadVideoArgs, VideoSnippet, VideoStatus } from "./types";
 
 // Initialize Express app
 const app = express();
@@ -30,12 +30,42 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
 
       // Call the function to upload the video
       const videoFullPath = path.resolve(getDataDirPath(), "video1.mp4");
-      const thumbnailPath = path.resolve(getDataDirPath(),"thumbnail.jpg");
+      const thumbnailPath = path.resolve(getDataDirPath(), "thumbnail.jpg");
 
       if (tokens.access_token) {
-        console.log('uploadVideo process starting, please wait ...');
-        
-        uploadVideo(tokens.access_token, videoFullPath,thumbnailPath);
+        console.log("uploadVideo process starting, please wait ...");
+        const today = new Date();
+        const videoSnippet: VideoSnippet = {
+          title: "My Video",
+          description: `Video description
+                        0:00 Introduction
+                        1:30 First Section
+                        3:45 Second Section
+                        5:00 Conclusion`,
+          tags: ["tag1", "tag2"],
+          publishedAt: today, // Set the creation date to today
+          defaultAudioLanguage: "en",
+          defaultLanguage: "en",
+        };
+        const videoStatus: VideoStatus = {
+          privacyStatus: "private", // or 'public', 'unlisted'
+          madeForKids: false,
+        };
+        const thumbnail : Thumbnail = {
+          path: thumbnailPath
+        };
+        const playlistItem : PlaylistItem = {
+          playlistId: "PLSw8d_JlnQ2tC_HcnKG3PQ74Qfje36pDA" // id of test playlist
+        };
+        const args: UploadVideoArgs = {
+          accessToken: tokens.access_token,
+          videoPath: videoFullPath,
+          videoSnippet,
+          videoStatus,
+          thumbnail,
+          playlistItem
+        };
+        uploadVideo(args);
       }
     } catch (error) {
       res.send("Error during authentication");
@@ -46,10 +76,7 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
   }
 });
 
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}/auth`);
 });
-
-
