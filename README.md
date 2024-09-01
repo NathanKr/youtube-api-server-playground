@@ -34,7 +34,7 @@ verify your phone number is required to upload custom thumbnail (might be done b
 OAuth2 and googleapis
 
 <h3>Endpoints</h3>
-http://localhost:3000/auth is used for authentication and later if ok redirect to http://localhost:3000/oauth2callback . You define the callback endpoint in the Google cloud console project while /auth is by design
+http://localhost:3000/auth is used for authentication and later if ok redirect to http://localhost:3000/oauth2callback . You define the callback endpoint in the Google cloud console project while /auth is your choice because it is initiated from you client
 
 <h3>credentials.json</h3>
 This is a file that you download from Google cloud console project . You can see there e.g. the callback under redirect_uris
