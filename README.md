@@ -25,7 +25,9 @@
   <p>Install the project packages as follows:</p>
 
 ```bash
+
 pnpm i
+
 ```
 
 You can also use npm
@@ -94,15 +96,18 @@ You can also use npm
 <p>Route to start the OAuth process:</p>
 
 ```ts
+
 app.get("/auth", (req: Request, res: Response) => {
   res.redirect(authorizationURL);
 });
+
 ```
 
 <h3>oauth2callback endpoint</h3>
 <p>Route to handle OAuth2 callback:</p>
 
 ```ts
+
 app.get("/oauth2callback", async (req: Request, res: Response) => {
   const code = req.query.code as string;
   if (code) {
