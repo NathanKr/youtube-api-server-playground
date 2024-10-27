@@ -114,6 +114,7 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
       .....
     
 ```
+
 <p><code>/oauth2callback</code> is defined in the Google Cloud project and must appear in the <code>credentials.json</code> file</p>
 
 
