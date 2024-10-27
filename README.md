@@ -1,105 +1,130 @@
 <h2>Motivation</h2>
-Experiment (POC) with youtube api (server side only) to access and modify private youtube channel data 
-
-<ul>
-<li>upload video : title , description , tags , defaultAudioLanguage , defaultLanguage , privacyStatus , selfDeclaredMadeForKids</li>
-<li>upload thumbnail</li>
-<li>upload playlist</li>
-</ul>
+  <p>Experiment (POC) with YouTube API (server-side only) to access and modify private YouTube channel data:</p>
+  <ul>
+    <li>upload video: title, description, tags, defaultAudioLanguage, defaultLanguage, privacyStatus, selfDeclaredMadeForKids</li>
+    <li>upload thumbnail</li>
+    <li>upload playlist</li>
+  </ul>
 
 <h2>Setup </h2>
-Follow these steps for successfull project setup
+<p>Follow these steps for a successful project setup:</p>
 
-<h3>Google cloud console project</h3>
-<ol>
-<li>create a google clode console project</li>
-<li>enable google api</li>
-<li>Use OAuth2</li>
-<li>Add scopes : https://www.googleapis.com/auth/youtube.upload </li>
-</ol>
+<h3>Google Cloud Console Project</h3>
+  <ol>
+    <li>Create a Google Cloud Console project.</li>
+    <li>Enable Google API.</li>
+    <li>Use OAuth2.</li>
+    <li>Add scopes: <code>https://www.googleapis.com/auth/youtube.upload</code></li>
+  </ol>
 
-<h3>YouTube channel owner</h3>
-verify your phone number is required to upload custom thumbnail (might be done by loading manually thumbnail to existing video)
+<h3>YouTube Channel Owner</h3>
+  <p>Verify your phone number is required to upload custom thumbnails (this might be done by loading a thumbnail manually to an existing video).</p>
+
 
 <h3>Packages</h3>
-Install the project packages as follows
+  <p>Install the project packages as follows:</p>
 
 ```bash
-pnpm i 
+pnpm i
 ```
 
 You can also use npm
 
 <h2>Usage</h2>
-Follow these steps for success usage
+<p>Follow these steps for successful usage:</p>
 
-<ol>
-<li>
-run the express server using
+<h3>Step 1</h3>
+<p>Run the express server using:</p>
+<pre><code>npm run dev</code></pre>
 
-```bash
-npm run dev
-```
+<h3>Step 2</h3>
+<p>Wait for the running message: 'Server is running on <a href="http://localhost:3000/auth">http://localhost:3000/auth</a>' in the terminal.</p>
 
-</li>
-<li>wait for running message : 'Server is running on http://localhost:3000/auth' in the terminal</li>
-<li>open the browser and access http://localhost:3000/auth</li>
-<li>sign in using your google account (nathan@nathankrasney.com in my case) as shown in the following figure
+<h3>Step 3</h3>
+<p>Open the browser and access <a href="http://localhost:3000/auth">http://localhost:3000/auth</a>.</p>
 
+<h3>Step 4</h3>
+<p>Sign in using your Google account (nathan@nathankrasney.com in my case) as shown in the following figure:</p>
+<img src="./figs/sign-in.png" alt="Sign In">
 
-<img src='./figs/sign-in.png'/>
+<h3>Step 5</h3>
+<p>You will be requested to supply additional access to your Google Account. 'Auto YouTube Video Upload' is my Google Cloud project name as shown in the following figure:</p>
+<img src="./figs/want-access.png" alt="Want Access">
 
-</li>
-<li>You will be requested to supply additional access to your Google Account .'Auto YouTube Video Upload' is my google cloud project name as shown in the following figure
+<h3>Step 6</h3>
+<p>Click continue.</p>
 
-<img src='./figs/want-access.png' />
+<h3>Step 7</h3>
+<p>Check the console for a message. In case of success, it might take a few minutes for the video to appear in the authenticated YouTube account (nathan@nathankrasney.com in my case):</p>
+<img src="./figs/video-uploaded.png" alt="Video Uploaded">
 
-</li>
-<li>click continue</li>
-<li>check the console for message, in case of success it might take few minutes for the video to appear in the authenticated account YouTube account (nathan@nathankrasney.com in my case)
+<h3>Step 8</h3>
+<p>Enter your YouTube account via <a href="https://studio.youtube.com/">YouTube Studio</a> and see that the video is loaded as shown in this figure:</p>
+<img src="./figs/uploaded-video-to-youtube.png" alt="Uploaded Video to YouTube">
 
-<img src='./figs/video-uploaded.png' />
-</li>
-<li>Enter you youtube account via <a href='https://studio.youtube.com'>https://studio.youtube.com/</a>  and see that the video is loaded as shown in this figure 
-<img src='./figs/uploaded=video-to-youtube.png'/>
-
-
-
-</li>
-</ol>
 
 <h2>Design</h2>
-This POC design is composed of few technoogies , enspoints and credentials.json file
+  <p>This POC design is composed of a few technologies, endpoints, and a <code>credentials.json</code> file.</p>
 
 <h3>Technologies</h3>
-<ul>
-<li>express - to implement a server</li>
-<li>OAuth2 - to authenticate ourself o google so will can update our youtube private data</li>
-<li>googleapis - to upload data e.g. video to our youtube channel</li>
-</ul>
-
+  <ul>
+    <li>express - to implement a server</li>
+    <li>OAuth2 - to authenticate ourselves to Google so we can update our YouTube private data</li>
+    <li>googleapis - to upload data e.g. video to our YouTube channel</li>
+  </ul>
 
 <h3>Endpoints</h3>
 <ul>
 <li>http://localhost:3000/auth is used for authentication </li>
-<li>later if ok redirect to http://localhost:3000/oauth2callback </li>
+<li>http://localhost:3000/oauth2callback is used later if ok redirect to </li>
 </ul>
 
-You define the callback endpoint in the Google cloud console project while /auth is your choice because it is initiated from you client
+  <p>You define the callback endpoint in the Google Cloud Console project while <code>/auth</code> is your choice because it is initiated from your client.</p>
 
 <h3>credentials.json</h3>
-This is a file that you download from Google cloud console project . You can see there e.g. the callback under redirect_uris
+  <p>This is a file that you download from Google Cloud Console project. You can see, e.g., the callback under <code>redirect_uris</code>:</p>
+  <img src="./figs/credentials-json.png" alt="Credentials JSON">
+  
+  <p><code>credentials.json</code> appears in <code>.gitignore</code> because this is sensitive data you do not want to share publicly.</p>
 
-<img src='./figs/credentials-json.png'/>
+<h2>Code</h2>
+<p>The following are worth mentioning code snippets:</p>
 
-credentials.json appears in .gitignore because this is sensitive data you do not to share publically
+<h3>auth endpoint</h3>
+<p>Route to start the OAuth process:</p>
 
-<h2>Points of interest</h2>
+```ts
+app.get("/auth", (req: Request, res: Response) => {
+  res.redirect(authorizationURL);
+});
+```
 
-<ul>
-<li>npm run test will invoke a test for uploadVideo function using mock of googleapi because we want to check the logic around it without consuming google api quota. The following figure show the test result
+<h3>oauth2callback endpoint</h3>
+<p>Route to handle OAuth2 callback:</p>
 
-<img src='./figs/test-results.png'/>
+```ts
+app.get("/oauth2callback", async (req: Request, res: Response) => {
+  const code = req.query.code as string;
+  if (code) {
+    try {
+      // Exchange authorization code for tokens
+      const { tokens } = await oauth2Client.getToken(code);
+      oauth2Client.setCredentials(tokens);
+      // Respond to the user
+      res.send("Authentication successful! Access token is logged.");
+      console.log("Access token:", tokens.access_token);
+      .....
+    
+```
 
-</li>
-</ul>
+<p><code>/oauth2callback</code> is defined in the Google Cloud project and must appear in the <code>credentials.json</code> file as shown in the following figure:</p>
+<img src='./figs/redirect-uris.png' alt='Redirect URIs'>
+
+
+<h2>Points of Interest</h2>
+  <ul>
+    <li><code>npm run test</code> will invoke a test for the <code>uploadVideo</code> function using a mock of googleapi because we want to check the logic around it without consuming Google API quota. The following figure shows the test result:
+      <img src="./figs/test-results.png" alt="Test Results">
+    </li>
+    <li>notice that for production you need to add the matching oauth2callback endpoint in credentials.json, http://localhost:3000/oauth2callback will not do</li>
+  </ul>
