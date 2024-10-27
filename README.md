@@ -107,18 +107,14 @@ app.get("/oauth2callback", async (req: Request, res: Response) => {
   const code = req.query.code as string;
   if (code) {
     try {
-      // Exchange authorization code for tokens
       const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
-      // Respond to the user
       res.send("Authentication successful! Access token is logged.");
       console.log("Access token:", tokens.access_token);
       .....
     
 ```
-
-<p><code>/oauth2callback</code> is defined in the Google Cloud project and must appear in the <code>credentials.json</code> file as shown in the following figure:</p>
-<img src='./figs/redirect-uris.png' alt='Redirect URIs'>
+<p><code>/oauth2callback</code> is defined in the Google Cloud project and must appear in the <code>credentials.json</code> file</p>
 
 
 <h2>Points of Interest</h2>
